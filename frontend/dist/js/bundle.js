@@ -61,7 +61,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -36005,7 +36005,8 @@ $provide.value("$locale", {
 
 angular.module("Home", []);
 
-__webpack_require__(6);  
+__webpack_require__(6);
+__webpack_require__(7);
 
 /***/ },
 /* 4 */
@@ -53118,25 +53119,45 @@ module.exports = routesConfig;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(8)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(9)(module)))
 
 /***/ },
 /* 6 */
 /***/ function(module, exports) {
 
-function HomeController() {  
+function HomeController(HomeService) {  
   var that = this;
-  that.foo = "Foo!";
-  console.log(that); // should print out the controller object
+  
+  that.question = null;
+  that.init = function () {
+    return HomeService.getQuestions().then(function(data) {
+      that.question = data;
+    });
+  };
 }
 
 angular.module("Home")  
   .controller("HomeController", [
+    "HomeService",
     HomeController
   ]);
 
 /***/ },
 /* 7 */
+/***/ function(module, exports) {
+
+function HomeService($resource) {
+  var that = this;
+  that.HomeResource = $resource(_urlPrefixes.API + "questions/:question_id");
+  that.getQuestions = function(params) {
+    return that.HomeResource.query(params).$promise;
+  };
+}
+angular.module("Home")
+  .service("HomeService", ["$resource", HomeService]);
+
+/***/ },
+/* 8 */
 /***/ function(module, exports) {
 
 var g;
@@ -53161,7 +53182,7 @@ module.exports = g;
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 module.exports = function(module) {
@@ -53187,7 +53208,7 @@ module.exports = function(module) {
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 

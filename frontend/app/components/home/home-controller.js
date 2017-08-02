@@ -1,10 +1,16 @@
-function HomeController() {  
+function HomeController(HomeService) {  
   var that = this;
-  that.foo = "Foo!";
-  console.log(that); // should print out the controller object
+  
+  that.question = null;
+  that.init = function () {
+    return HomeService.getQuestions().then(function(data) {
+      that.question = data;
+    });
+  };
 }
 
 angular.module("Home")  
   .controller("HomeController", [
+    "HomeService",
     HomeController
   ]);

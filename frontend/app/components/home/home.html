@@ -1,5 +1,6 @@
-<div ng-controller="HomeController as ctrl">  
+<div ng-controller="HomeController as ctrl" ng-init="ctrl.init()">  
     <div>
         <h1>Home!</h1>
+        <div>{{question.question_text}}</div>
     </div>
 </div>  
