@@ -1,6 +1,27 @@
-<div ng-controller="HomeController as ctrl" ng-init="ctrl.init()">  
-    <div>
-        <h1>Home!</h1>
-        <div>{{question.question_text}}</div>
+
+<form name="form1" class="form-horizontal" ng-controller="HomeController as ctrl" ng-init="ctrl.init()" action="{% url 'result' %}" type="post"> 
+    <input type="text" name="qid" style="display:none;" ng-bind="ctrl.question.id">
+    <input type="text" name="cid" style="display:none;" ng-bind="ctrl.selectedIndex">
+<div >     
+<div class="container">
+    <div class="row">
+        <div class="col">{{ctrl.question.question_text}}</div>
     </div>
+    <div class="row"><div class="col"></div></div>
+    <div class="row">
+        <div class="col btn-group" uib-dropdown>
+        <button id="dropdown" type="button" class="btn btn-primary" uib-dropdown-toggle ng-disabled="disabled">
+             Select your answer<span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+            <li  ng-repeat="choice in ctrl.question.choices" role="menuitem" id="choice.id">
+                <a ng-href="#" ng-click="return ctrl.onchange(choice.id)"> {{choice.text}} </a>
+            </li>
+        </ul>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit" onclick="document.form1.submit();">Submit</button>
+
+</div>
 </div>  
+</form>

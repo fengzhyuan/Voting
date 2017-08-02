@@ -22,6 +22,6 @@ class Choice(models.Model):
     votes = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.choice_text
+        return '{"id":%d, "text": "%s"}' % (self.id, self.choice_text)
     def __unicode(self):
-        return self.choice_text
+        return '{"id":%d, "text": "%s"}' % (self.id, self.choice_text)

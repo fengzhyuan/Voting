@@ -1,26 +1,28 @@
 {
-  "name": "Voting",
+  "name": "voting",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "webpack --config webpack.config.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "zfeng",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^4.3.0",
-    "eslint-loader": "^1.9.0",
-    "loadash": "0.0.1"
+    "loadash": "0.0.1",
+    "webpack": "^2.1.0-beta.22"
   },
   "dependencies": {
     "angular": "^1.6.5",
     "angular-resource": "^1.6.5",
     "angular-route": "^1.6.5",
+    "angular-ui-bootstrap": "^2.5.0",
+    "eslint-loader": "^1.9.0",
     "json-loader": "^0.5.7",
     "lodash": "^4.17.4",
-    "mustache-loader": "^1.0.0",
-    "webpack": "^2.1.0-beta.22"
-  }
+    "mustache-loader": "^1.0.0"
+  },
+  "description": ""
 }
