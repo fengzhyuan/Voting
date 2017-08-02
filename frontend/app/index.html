@@ -1,0 +1,11 @@
+{% load static %}
+<html ng-app="myApp">
+    <head>
+        <title>Survey</title>
+        <script src="{% static 'dist/js/bundle.js' %}" ></script>
+        <base href="/">
+    </head>
+    <body> 
+        <div><div ng-view></div></div>
+    </body>
+</html>
