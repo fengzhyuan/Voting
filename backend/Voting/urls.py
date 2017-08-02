@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('api.urls')),
     url(r'^$', TemplateView.as_view(template_name="app/index.html"), name="index"),
+    url(r'^stat/$', TemplateView.as_view(template_name="app/components/stat/stat.html"), name="stat"),
 ]

@@ -61,7 +61,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,11 +70,19 @@
 
 angular.module("Home", []);
 
-__webpack_require__(7);
 __webpack_require__(8);
+__webpack_require__(9);
 
 /***/ },
 /* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+angular.module("Stat", []);
+
+__webpack_require__(10);
+
+/***/ },
+/* 2 */
 /***/ function(module, exports) {
 
 function routesConfig($routeProvider) {  
@@ -82,9 +90,6 @@ function routesConfig($routeProvider) {
     .when("/", {
       templateUrl: _urlPrefixes.TEMPLATES + "components/home/home.html",
       label: "Home"
-    })
-    .when("index", {
-      templateUrl: _urlPrefixes.TEMPLATES + "index.html"
     })
     .otherwise({
       templateUrl: _urlPrefixes.TEMPLATES + "404.html"
@@ -96,7 +101,7 @@ routesConfig.$inject = ["$routeProvider"];
 module.exports = routesConfig;  
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports) {
 
 /**
@@ -960,7 +965,7 @@ angular.module('ngResource', ['ng']).
 
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 /**
@@ -2195,16 +2200,16 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-__webpack_require__(9);
+__webpack_require__(12);
 
 module.exports = 'ui.bootstrap';
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 /**
@@ -36040,7 +36045,7 @@ $provide.value("$locale", {
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -53128,10 +53133,10 @@ $provide.value("$locale", {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(11)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(14)(module)))
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 
@@ -53139,10 +53144,12 @@ function HomeController(HomeService) {
   var that = this;
   
   that.question = [];
-  that.selectedIndex = -1;
-  that.onchange = function (id) {
-    that.selectedIndex = id; console.log(id);
-    return false;
+  that.choice = null;
+  that.onchange = function (choice) {
+    that.choice = choice;
+  };
+  that.onsubmit = function () {
+    HomeService.updateChoice(that.choice.id, that.choice.vote);
   };
   that.init = function () {
     return HomeService.getQuestions().then(function(data) {
@@ -53162,21 +53169,49 @@ angular.module("Home")
   ]);
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 function HomeService($resource) {
   var that = this;
-  that.HomeResource = $resource(_urlPrefixes.API + "questions/:question_id");
+  that.QRes = $resource(_urlPrefixes.API + "questions/:id");
   that.getQuestions = function(params) {
-    return that.HomeResource.query(params).$promise;
+    return that.QRes.query(params).$promise;
+  };
+  that.updateChoice = function(id, vote) {
+    var Choice = $resource(_urlPrefixes.API + "choices/:id", {id: '@id'});
+    var choice = Choice.get({id: id}, function() {
+      choice.votes = vote;
+      choice.$save();
+    });
   };
 }
 angular.module("Home")
   .service("HomeService", ["$resource", HomeService]);
 
 /***/ },
-/* 9 */
+/* 10 */
+/***/ function(module, exports) {
+
+
+function StatController(StatService) {  
+  var that = this;
+  
+  that.init = function () {
+    return StatService.getVotes().then(function(data) {
+    });
+  };
+}
+
+angular.module("Stat")  
+  .controller("StatController", [
+    "StatService",
+    StatController
+  ]);
+
+/***/ },
+/* 11 */,
+/* 12 */
 /***/ function(module, exports) {
 
 /*
@@ -60957,7 +60992,7 @@ angular.module('ui.bootstrap.timepicker').run(function() {!angular.$$csp().noInl
 angular.module('ui.bootstrap.typeahead').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTypeaheadCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style>'); angular.$$uibTypeaheadCss = true; });
 
 /***/ },
-/* 10 */
+/* 13 */
 /***/ function(module, exports) {
 
 var g;
@@ -60982,7 +61017,7 @@ module.exports = g;
 
 
 /***/ },
-/* 11 */
+/* 14 */
 /***/ function(module, exports) {
 
 module.exports = function(module) {
@@ -61008,17 +61043,18 @@ module.exports = function(module) {
 
 
 /***/ },
-/* 12 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-__webpack_require__(5);
-__webpack_require__(3);
-__webpack_require__(2);
-__webpack_require__(0);
+__webpack_require__(6);
 __webpack_require__(4);
-var routesConfig = __webpack_require__(1);
+__webpack_require__(3);
+__webpack_require__(0);
+__webpack_require__(1);
+__webpack_require__(5);
+var routesConfig = __webpack_require__(2);
 
-_ = __webpack_require__(6);
+_ = __webpack_require__(7);
 _urlPrefixes = {
   API: "api/",
   TEMPLATES: "static/app/"
@@ -61026,6 +61062,7 @@ _urlPrefixes = {
 
 angular.module("myApp", [
   "Home",
+  "Stat",
   "ngResource",
   "ngRoute",
   "ui.bootstrap",

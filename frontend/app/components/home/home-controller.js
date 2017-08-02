@@ -3,10 +3,12 @@ function HomeController(HomeService) {
   var that = this;
   
   that.question = [];
-  that.selectedIndex = -1;
-  that.onchange = function (id) {
-    that.selectedIndex = id; console.log(id);
-    return false;
+  that.choice = null;
+  that.onchange = function (choice) {
+    that.choice = choice;
+  };
+  that.onsubmit = function () {
+    HomeService.updateChoice(that.choice.id, that.choice.vote);
   };
   that.init = function () {
     return HomeService.getQuestions().then(function(data) {

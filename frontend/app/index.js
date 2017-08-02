@@ -2,6 +2,7 @@ require("angular/angular");
 require("angular-route/angular-route");
 require("angular-resource/angular-resource");
 require("./components/home/home");
+require("./components/stat/stat");
 require("angular-ui-bootstrap");
 var routesConfig = require("./routes");
 
@@ -13,6 +14,7 @@ _urlPrefixes = {
 
 angular.module("myApp", [
   "Home",
+  "Stat",
   "ngResource",
   "ngRoute",
   "ui.bootstrap",
