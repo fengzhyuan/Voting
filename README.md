@@ -31,4 +31,5 @@ why django + angular?
 ---------------------
 Django: an easy to set server side framework based on Python  
 Angular: a MVC framework providing data-binding and easy DOM manipulation  
+---------------------  
 website: [localhost:8000/](localhost:8000/)
