@@ -61,7 +61,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,7 +71,7 @@
 angular.module("Home", []);
 
 __webpack_require__(8);
-__webpack_require__(9);
+
 
 /***/ },
 /* 1 */
@@ -79,7 +79,7 @@ __webpack_require__(9);
 
 angular.module("Stat", []);
 
-__webpack_require__(10);
+__webpack_require__(9);
 
 /***/ },
 /* 2 */
@@ -90,6 +90,10 @@ function routesConfig($routeProvider) {
     .when("/", {
       templateUrl: _urlPrefixes.TEMPLATES + "components/home/home.html",
       label: "Home"
+    })
+    .when("/stat", {
+      templateUrl: _urlPrefixes.TEMPLATES + "components/stat/stat.html",
+      label: "Stat"
     })
     .otherwise({
       templateUrl: _urlPrefixes.TEMPLATES + "404.html"
@@ -2203,7 +2207,7 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-__webpack_require__(12);
+__webpack_require__(10);
 
 module.exports = 'ui.bootstrap';
 
@@ -53133,14 +53137,14 @@ $provide.value("$locale", {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(14)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(12)(module)))
 
 /***/ },
 /* 8 */
 /***/ function(module, exports) {
 
 
-function HomeController(HomeService) {  
+function HomeController($http, $location) {  
   var that = this;
   
   that.question = [];
@@ -53149,12 +53153,26 @@ function HomeController(HomeService) {
     that.choice = choice;
   };
   that.onsubmit = function () {
-    HomeService.updateChoice(that.choice.id, that.choice.vote);
+    that.choice.vote += 1
+    $http.put(_urlPrefixes.API + `choices/${that.choice.id}/`, 
+    {
+      id: that.choice.id, 
+      votes: that.choice.vote,
+      question: that.question.id,
+      choice_text: that.choice.text
+    })
+      .then(function(data) {
+        console.log(data);
+        $location.path('/stat').search({qid: that.question.id});
+      }, function(response) {
+        console.log(JSON.stringify(response));
+      });
   };
   that.init = function () {
-    return HomeService.getQuestions().then(function(data) {
-      var indx = Math.floor(data.length * Math.random());
-      that.question = data[indx];
+    $http.get(_urlPrefixes.API + "questions/").then(function(data) {
+      var questions = data.data;
+      var indx = Math.floor(questions.length * Math.random());
+      that.question = questions[indx];
       for (var i = 0, l = that.question.choices.length; i < l; ++i) {
         that.question.choices[i] = JSON.parse(that.question.choices[i]);
       }
@@ -53164,7 +53182,8 @@ function HomeController(HomeService) {
 
 angular.module("Home")  
   .controller("HomeController", [
-    "HomeService",
+    "$http",
+    "$location",
     HomeController
   ]);
 
@@ -53172,46 +53191,37 @@ angular.module("Home")
 /* 9 */
 /***/ function(module, exports) {
 
-function HomeService($resource) {
+function StatController($http, $routeParams, $scope) {  
   var that = this;
-  that.QRes = $resource(_urlPrefixes.API + "questions/:id");
-  that.getQuestions = function(params) {
-    return that.QRes.query(params).$promise;
-  };
-  that.updateChoice = function(id, vote) {
-    var Choice = $resource(_urlPrefixes.API + "choices/:id", {id: '@id'});
-    var choice = Choice.get({id: id}, function() {
-      choice.votes = vote;
-      choice.$save();
-    });
-  };
-}
-angular.module("Home")
-  .service("HomeService", ["$resource", HomeService]);
+  $scope.questionId = $routeParams.qid;
+  $scope.labels = [];
+  $scope.data = [];
 
-/***/ },
-/* 10 */
-/***/ function(module, exports) {
-
-
-function StatController(StatService) {  
-  var that = this;
-  
   that.init = function () {
-    return StatService.getVotes().then(function(data) {
-    });
+    $http.get(_urlPrefixes.API + "questions/"+$scope.questionId)
+      .then(function(response) {
+        var question = response.data;
+        var choices = question.choices;
+
+        for (var i = 0, l = choices.length; i < l; ++i) {
+          choices[i] = JSON.parse(choices[i]);
+          $scope.labels.push(choices[i].text);
+          $scope.data.push(choices[i].vote);
+        }
+      });
   };
 }
 
-angular.module("Stat")  
+angular.module("Stat", ["chart.js"])
   .controller("StatController", [
-    "StatService",
+    "$http",
+    "$routeParams",
+    "$scope",
     StatController
   ]);
 
 /***/ },
-/* 11 */,
-/* 12 */
+/* 10 */
 /***/ function(module, exports) {
 
 /*
@@ -60992,7 +61002,7 @@ angular.module('ui.bootstrap.timepicker').run(function() {!angular.$$csp().noInl
 angular.module('ui.bootstrap.typeahead').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTypeaheadCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style>'); angular.$$uibTypeaheadCss = true; });
 
 /***/ },
-/* 13 */
+/* 11 */
 /***/ function(module, exports) {
 
 var g;
@@ -61017,7 +61027,7 @@ module.exports = g;
 
 
 /***/ },
-/* 14 */
+/* 12 */
 /***/ function(module, exports) {
 
 module.exports = function(module) {
@@ -61043,7 +61053,7 @@ module.exports = function(module) {
 
 
 /***/ },
-/* 15 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
