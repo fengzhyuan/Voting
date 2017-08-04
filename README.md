@@ -8,14 +8,14 @@ The data can be modified via browsable API portal as admin user, [localhost:8000
 Angular + Bootstrap UI with Angular-Chart support to serve front-end side.  
 
 Prerequisites
---------------------
+--------------------  
 `node.js`  
 `python`  
 `Django`  
 `Angular`  
 
 how to run the demo?
---------------------
+--------------------  
 `cd path\to\the\project\root\`  
 
 backend:  
@@ -28,7 +28,7 @@ frontend:
 `webpack`
 
 why django + angular?
----------------------
+---------------------  
 Django: an easy to set server side framework based on Python  
 Angular: a MVC framework providing data-binding and easy DOM manipulation  
 ---------------------  
